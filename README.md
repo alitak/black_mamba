@@ -7,7 +7,7 @@
 -Python 3.7
 -pip install discord (Basically install the default discord lib)
 -Account at https://api.swgoh.help/ and Developer Token
--To run the code use bot2.py file! 
+-To run the code use black_mamba.py file! 
 ```
 ## Built With
 * [Python 3.7](https://www.python.org/) - Programming language, which I used
