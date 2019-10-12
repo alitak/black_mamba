@@ -16,7 +16,7 @@ dotenv.load_dotenv()
 user=os.getenv('user')
 password=os.getenv('password')
 token=os.getenv('token')
-BOT_PREFIX = ("!")
+BOT_PREFIX = ("-")
 TOKEN = token
 
 creds = settings(user, password)
