@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import requests
 from collections import OrderedDict
 import collections
