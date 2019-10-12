@@ -6,6 +6,7 @@
 -Discord account to use at your server
 -Python 3.7
 -pip install discord (Basically install the default discord lib)
+-pip install python-dotenv
 -Account at https://api.swgoh.help/ and Developer Token
 -To run the code use black_mamba.py file! 
 ```
