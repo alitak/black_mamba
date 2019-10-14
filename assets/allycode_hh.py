@@ -9,7 +9,7 @@ ally_hh={
 349733345: "Cruse McReaf",
 466833624: "csuleeano JME",
 279179134: "Don",
-557681211: "DarthBela",
+259925494: "Van Der Bosch Parancsnok",
 993355546: "dezoxiriboz",
 146435632: "Diagoras [Kutya]",
 252864384: "Dirtow",
