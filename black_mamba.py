@@ -814,7 +814,7 @@ async def mod(ctx, nev: str):
                 )
 async def mguide(ctx):
     await ctx.message.add_reaction("⌛")
-    await ctx.send(file=discord.File('mguide.jpg'))
+    await ctx.send('http://hh.alitak.hu/assets/mguide.jpg')
     await ctx.message.add_reaction("✅")
 
 
