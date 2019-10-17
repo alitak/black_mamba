@@ -1103,11 +1103,26 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                     sum_g12 += 1
                 if (p['gear'] == 13):
                     sum_g13 += 1
+                if p["combatType"] == "CHARACTER":
+                    for r in p['mods']:
+
+                        for z in r["secondaryStat"]:
+
+                            if z["unitStat"] == "UNITSTATSPEED":
+
+                                if z["value"] >= 10 and z["value"] < 15:
+                                    sum_10speed_mods += 1
+                                if z["value"] >= 15 and z["value"] < 20:
+                                    sum_15speed_mods += 1
+                                if z["value"] >= 20 and z["value"] < 25:
+                                    sum_20speed_mods += 1
+                                if z["value"] >= 25 and z["value"] < 35:
+                                    sum_25speed_mods += 1
 
                 for q in karik.values():
                     seged_zeta_szam = 0
                     if q['name'] == p['nameKey']:
-                        seged_speed=0
+                        seged_speed = 0
                         if p['rarity'] == 7:
                             q['7*'] += 1
                         if p['rarity'] == 6:
@@ -1130,31 +1145,21 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                             q['zz'] += 1
                         if seged_zeta_szam == 1:
                             q['z'] += 1
-                        if p["combatType"]=="CHARACTER":
-                         for r in p['mods']:
-                            if r["primaryStat"]["unitStat"] == "UNITSTATSPEED":
-                                seged_speed += r["primaryStat"]["value"]
-                            for z in r["secondaryStat"]:
+                        if p["combatType"] == "CHARACTER":
+                            for r in p['mods']:
+                                if r["primaryStat"]["unitStat"] == "UNITSTATSPEED":
+                                    seged_speed += r["primaryStat"]["value"]
+                                for z in r["secondaryStat"]:
 
-                                if z["unitStat"] == "UNITSTATSPEED":
-                                    seged_speed += z["value"]
-                                    if z["value"]>=10 and z["value"]<15:
-                                        sum_10speed_mods+=1
-                                    if z["value"]>=15 and z["value"]<20:
-                                        sum_15speed_mods+=1
-                                    if z["value"]>=20 and z["value"]<25:
-                                        sum_20speed_mods+=1
-                                    if z["value"]>=25 and z["value"]<35:
-                                        sum_25speed_mods+=1
+                                    if z["unitStat"] == "UNITSTATSPEED":
+                                        seged_speed += z["value"]
 
-
-                        if seged_speed>=60 and seged_speed<80:
-                            q['60-80']+=1
-                        if seged_speed >=80 and seged_speed < 100:
+                        if seged_speed >= 60 and seged_speed < 80:
+                            q['60-80'] += 1
+                        if seged_speed >= 80 and seged_speed < 100:
                             q['80-100'] += 1
-                        if seged_speed>=100:
-                            q['100+']+=1
-
+                        if seged_speed >= 100:
+                            q['100+'] += 1
 
         for i in range(0, members_02):
 
@@ -1164,7 +1169,21 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                     sum_g12_02 += 1
                 if (p['gear'] == 13):
                     sum_g13_02 += 1
+                if p["combatType"] == "CHARACTER":
+                    for r in p['mods']:
 
+                        for z in r["secondaryStat"]:
+
+                            if z["unitStat"] == "UNITSTATSPEED":
+
+                                if z["value"] >= 10 and z["value"] < 15:
+                                    sum_10speed_mods_02 += 1
+                                if z["value"] >= 15 and z["value"] < 20:
+                                    sum_15speed_mods_02 += 1
+                                if z["value"] >= 20 and z["value"] < 25:
+                                    sum_20speed_mods_02 += 1
+                                if z["value"] >= 25 and z["value"] < 35:
+                                    sum_25speed_mods_02 += 1
                 for q in karik_02.values():
                     seged_zeta_szam = 0
                     if q['name'] == p['nameKey']:
@@ -1192,22 +1211,13 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                         if seged_zeta_szam == 1:
                             q['z'] += 1
                         if p["combatType"] == "CHARACTER":
-                         for r in p['mods']:
-                            if r["primaryStat"]["unitStat"] == "UNITSTATSPEED":
-                                seged_speed += r["primaryStat"]["value"]
-                            for z in r["secondaryStat"]:
+                            for r in p['mods']:
+                                if r["primaryStat"]["unitStat"] == "UNITSTATSPEED":
+                                    seged_speed += r["primaryStat"]["value"]
+                                for z in r["secondaryStat"]:
 
-                                if z["unitStat"] == "UNITSTATSPEED":
-                                    seged_speed += z["value"]
-                                    if z["value"]>=10 and z["value"]<15:
-                                        sum_10speed_mods_02+=1
-                                    if z["value"]>=15 and z["value"]<20:
-                                        sum_15speed_mods_02+=1
-                                    if z["value"]>=20 and z["value"]<25:
-                                        sum_20speed_mods_02+=1
-                                    if z["value"]>=25 and z["value"]<35:
-                                        sum_25speed_mods_02+=1
-
+                                    if z["unitStat"] == "UNITSTATSPEED":
+                                        seged_speed += z["value"]
 
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
@@ -1461,6 +1471,21 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                     sum_g12 += 1
                 if (p['gear'] == 13):
                     sum_g13 += 1
+                if p["combatType"] == "CHARACTER":
+                    for r in p['mods']:
+
+                        for z in r["secondaryStat"]:
+
+                            if z["unitStat"] == "UNITSTATSPEED":
+
+                                if z["value"] >= 10 and z["value"] < 15:
+                                    sum_10speed_mods += 1
+                                if z["value"] >= 15 and z["value"] < 20:
+                                    sum_15speed_mods += 1
+                                if z["value"] >= 20 and z["value"] < 25:
+                                    sum_20speed_mods += 1
+                                if z["value"] >= 25 and z["value"] < 35:
+                                    sum_25speed_mods += 1
 
                 for q in karik.values():
                     seged_zeta_szam = 0
@@ -1496,14 +1521,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
 
                                     if z["unitStat"] == "UNITSTATSPEED":
                                         seged_speed += z["value"]
-                                        if z["value"] >= 10 and z["value"] < 15:
-                                            sum_10speed_mods += 1
-                                        if z["value"] >= 15 and z["value"] < 20:
-                                            sum_15speed_mods += 1
-                                        if z["value"] >= 20 and z["value"] < 25:
-                                            sum_20speed_mods += 1
-                                        if z["value"] >= 25 and z["value"] < 35:
-                                            sum_25speed_mods += 1
+
 
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
@@ -1520,7 +1538,21 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                     sum_g12_02 += 1
                 if (p['gear'] == 13):
                     sum_g13_02 += 1
+                if p["combatType"] == "CHARACTER":
+                    for r in p['mods']:
 
+                        for z in r["secondaryStat"]:
+
+                            if z["unitStat"] == "UNITSTATSPEED":
+
+                                if z["value"] >= 10 and z["value"] < 15:
+                                    sum_10speed_mods_02 += 1
+                                if z["value"] >= 15 and z["value"] < 20:
+                                    sum_15speed_mods_02 += 1
+                                if z["value"] >= 20 and z["value"] < 25:
+                                    sum_20speed_mods_02 += 1
+                                if z["value"] >= 25 and z["value"] < 35:
+                                    sum_25speed_mods_02 += 1
                 for q in karik_02.values():
                     seged_zeta_szam = 0
                     if q['name'] == p['nameKey']:
@@ -1555,14 +1587,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
 
                                     if z["unitStat"] == "UNITSTATSPEED":
                                         seged_speed += z["value"]
-                                        if z["value"] >= 10 and z["value"] < 15:
-                                            sum_10speed_mods_02 += 1
-                                        if z["value"] >= 15 and z["value"] < 20:
-                                            sum_15speed_mods_02 += 1
-                                        if z["value"] >= 20 and z["value"] < 25:
-                                            sum_20speed_mods_02 += 1
-                                        if z["value"] >= 25 and z["value"] < 35:
-                                            sum_25speed_mods_02 += 1
+
 
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
@@ -1575,7 +1600,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                               url="https://swgoh.gg/p/" + str(raw_guild2[0]['roster'][0]['allyCode']) + "/",
                               color=0x7289da)
 
-        lth= 6
+        lth: int = 6
         embed.add_field(name='=========== Összefoglaló ===========', value=
         '```Létszám         ::  ' + ' ' * (lth - len(str(members))) + str(
             members) + ' vs ' + str(members_02) + '\n' +
@@ -1604,7 +1629,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
         '```')
 
         i = 0
-        j= 30
+        j: int = 30
         for q in character_list:
             lth = round((j - len(character_list[i])) / 2)
             if lth <= 8:
