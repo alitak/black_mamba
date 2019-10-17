@@ -983,6 +983,11 @@ async def twcompare(ctx, user: discord.User, ally2: int):
         sum_20speed_mods = 0
         sum_25speed_mods = 0
 
+        sum_10speed_mods_02 = 0
+        sum_15speed_mods_02 = 0
+        sum_20speed_mods_02 = 0
+        sum_25speed_mods_02 = 0
+
         character_list = ["Darth Traya",
                           "Darth Revan",
                           "Jedi Knight Revan",
@@ -1195,13 +1200,13 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                                 if z["unitStat"] == "UNITSTATSPEED":
                                     seged_speed += z["value"]
                                     if z["value"]>=10 and z["value"]<15:
-                                        sum_10speed_mods+=1
+                                        sum_10speed_mods_02+=1
                                     if z["value"]>=15 and z["value"]<20:
-                                        sum_15speed_mods+=1
+                                        sum_15speed_mods_02+=1
                                     if z["value"]>=20 and z["value"]<25:
-                                        sum_20speed_mods+=1
+                                        sum_20speed_mods_02+=1
                                     if z["value"]>=25 and z["value"]<35:
-                                        sum_25speed_mods+=1
+                                        sum_25speed_mods_02+=1
 
 
                         if seged_speed >= 60 and seged_speed < 80:
@@ -1216,7 +1221,7 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                               url="https://swgoh.gg/p/" + str(raw_guild2[0]['roster'][0]['allyCode']) + "/",
                               color=0x7289da)
 
-        lth: int = 6
+        lth= 6
         embed.add_field(name='=========== Összefoglaló ===========', value=
         '```Létszám         ::  ' + ' ' * (lth - len(str(members))) + str(
             members) + ' vs ' + str(members_02) + '\n' +
@@ -1229,23 +1234,23 @@ async def twcompare(ctx, user: discord.User, ally2: int):
             '{:,}'.format(sum_g13)) + ' vs ' + str('{:,}'.format(sum_g13_02))
         + '\n' +
         '10+ spd mod secs::  ' + ' ' * (lth - len(str(sum_10speed_mods))) + str(
-            '{:,}'.format(sum_10speed_mods)) + ' vs ' + str('{:,}'.format(sum_10speed_mods))
+            '{:,}'.format(sum_10speed_mods)) + ' vs ' + str('{:,}'.format(sum_10speed_mods_02))
         + '\n' +
         '15+ spd mod secs::  ' + ' ' * (lth - len(str(sum_15speed_mods))) + str(
-            '{:,}'.format(sum_15speed_mods)) + ' vs ' + str('{:,}'.format(sum_15speed_mods))
+            '{:,}'.format(sum_15speed_mods)) + ' vs ' + str('{:,}'.format(sum_15speed_mods_02))
 
         + '\n' +
         '20+ spd mod secs::  ' + ' ' * (lth - len(str(sum_20speed_mods))) + str(
-            '{:,}'.format(sum_20speed_mods)) + ' vs ' + str('{:,}'.format(sum_20speed_mods))
+            '{:,}'.format(sum_20speed_mods)) + ' vs ' + str('{:,}'.format(sum_20speed_mods_02))
 
         + '\n' +
         '25+ spd mod secs::  ' + ' ' * (lth - len(str(sum_25speed_mods))) + str(
-            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods))+
+            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods_02))+
 
         '```')
 
         i = 0
-        j: int = 30
+        j= 30
         for q in character_list:
             lth = round((j - len(character_list[i])) / 2)
             if lth <= 8:
@@ -1340,6 +1345,10 @@ async def twcompare2(ctx, ally1: int, ally2: int):
         sum_15speed_mods = 0
         sum_20speed_mods = 0
         sum_25speed_mods = 0
+        sum_10speed_mods_02 = 0
+        sum_15speed_mods_02 = 0
+        sum_20speed_mods_02 = 0
+        sum_25speed_mods_02 = 0
 
         character_list = ["Darth Traya",
                           "Darth Revan",
@@ -1547,13 +1556,13 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                                     if z["unitStat"] == "UNITSTATSPEED":
                                         seged_speed += z["value"]
                                         if z["value"] >= 10 and z["value"] < 15:
-                                            sum_10speed_mods += 1
+                                            sum_10speed_mods_02 += 1
                                         if z["value"] >= 15 and z["value"] < 20:
-                                            sum_15speed_mods += 1
+                                            sum_15speed_mods_02 += 1
                                         if z["value"] >= 20 and z["value"] < 25:
-                                            sum_20speed_mods += 1
+                                            sum_20speed_mods_02 += 1
                                         if z["value"] >= 25 and z["value"] < 35:
-                                            sum_25speed_mods += 1
+                                            sum_25speed_mods_02 += 1
 
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
@@ -1566,7 +1575,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                               url="https://swgoh.gg/p/" + str(raw_guild2[0]['roster'][0]['allyCode']) + "/",
                               color=0x7289da)
 
-        lth: int = 6
+        lth= 6
         embed.add_field(name='=========== Összefoglaló ===========', value=
         '```Létszám         ::  ' + ' ' * (lth - len(str(members))) + str(
             members) + ' vs ' + str(members_02) + '\n' +
@@ -1579,23 +1588,23 @@ async def twcompare2(ctx, ally1: int, ally2: int):
             '{:,}'.format(sum_g13)) + ' vs ' + str('{:,}'.format(sum_g13_02))
         + '\n' +
         '10+ spd mod secs::  ' + ' ' * (lth - len(str(sum_10speed_mods))) + str(
-            '{:,}'.format(sum_10speed_mods)) + ' vs ' + str('{:,}'.format(sum_10speed_mods))
+            '{:,}'.format(sum_10speed_mods)) + ' vs ' + str('{:,}'.format(sum_10speed_mods_02))
         + '\n' +
         '15+ spd mod secs::  ' + ' ' * (lth - len(str(sum_15speed_mods))) + str(
-            '{:,}'.format(sum_15speed_mods)) + ' vs ' + str('{:,}'.format(sum_15speed_mods))
+            '{:,}'.format(sum_15speed_mods)) + ' vs ' + str('{:,}'.format(sum_15speed_mods_02))
 
         + '\n' +
         '20+ spd mod secs::  ' + ' ' * (lth - len(str(sum_20speed_mods))) + str(
-            '{:,}'.format(sum_20speed_mods)) + ' vs ' + str('{:,}'.format(sum_20speed_mods))
+            '{:,}'.format(sum_20speed_mods)) + ' vs ' + str('{:,}'.format(sum_20speed_mods_02))
 
         + '\n' +
         '25+ spd mod secs::  ' + ' ' * (lth - len(str(sum_25speed_mods))) + str(
-            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods)) +
+            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods_02)) +
 
         '```')
 
         i = 0
-        j: int = 30
+        j= 30
         for q in character_list:
             lth = round((j - len(character_list[i])) / 2)
             if lth <= 8:
