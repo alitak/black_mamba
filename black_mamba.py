@@ -5,23 +5,31 @@ import collections
 import operator
 import dotenv
 import os
-from assets.api_swgoh_helper import api_swgoh_help,settings
+from assets.api_swgoh_helper import api_swgoh_help, settings
 from assets.characters_aliasos import characters
 from assets.allycode_hh import ally_hh
 import discord
 from discord.ext import commands
-from discord.ext.commands import Bot
 
 dotenv.load_dotenv()
-user=os.getenv('user')
-password=os.getenv('password')
-token=os.getenv('token')
-BOT_PREFIX = ("-")
-TOKEN = token
+swgoh_help = api_swgoh_help(settings(os.getenv('user'), os.getenv('password')))
+bot = commands.Bot(command_prefix='-')
 
-creds = settings(user, password)
-client02 = api_swgoh_help(creds)
-client = Bot(command_prefix=BOT_PREFIX)
+
+async def addSuccessReaction(ctx):
+    await ctx.message.clear_reactions()
+    await ctx.message.add_reaction("✅")
+
+
+async def addErrorReaction(ctx):
+    await ctx.message.clear_reactions()
+    await ctx.message.add_reaction("❌")
+
+
+async def addWaitingReaction(ctx):
+    await ctx.message.clear_reactions()
+    await ctx.message.add_reaction("⌛")
+
 
 def fetchGuildRoster(raw_guild):
     guilddata = []
@@ -31,24 +39,30 @@ def fetchGuildRoster(raw_guild):
         chardata_ally.insert(i, raw_guild[0]['roster'][i]['allyCode'])
         i += 1
 
-    guilddata = client02.fetchPlayers(chardata_ally)
+    guilddata = swgoh_help.fetchPlayers(chardata_ally)
 
     return guilddata
 
 
-@client.event
+@bot.event
 async def on_ready():
     game = discord.Game("-hello")
-    await client.change_presence(status=discord.Status.online, activity=game)
+    await bot.change_presence(status=discord.Status.online, activity=game)
 
 
-@client.command(pass_context=True,
-                description="Üdvözlő és parancs információs.")
+@bot.command(pass_context=True, description="teszt")
+async def a(ctx):
+    await addWaitingReaction(ctx)
+    embed = discord.Embed(title="TESZT", color=0xffffff)
+    await ctx.send(embed=embed)
+    await addSuccessReaction(ctx)
+
+
+@bot.command(pass_context=True, description="Üdvözlő és parancs információs.")
 async def hello(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
 
-    embed = discord.Embed(title="Szia HUNted HUNt3rs barátom!\n" +
-                                "Használati útmutatóm\n", color=0x00ffff)
+    embed = discord.Embed(title="Szia HUNted HUNt3rs barátom!\nHasználati útmutatóm\n", color=0x00ffff)
     embed.add_field(name="Hogyan futtathatsz?",
                     value='```' + "Használatom '-' előjellel majd utána paranccsal történik." + '```')
 
@@ -78,12 +92,13 @@ async def hello(ctx):
     events = "Használatom:-events\nInfo:Ingame kalendár!Azokat mutatja,amik ingame már bejelentettek."
     tbplatoon = "Használatom:-tbplatoon\nInfo:Geo TB Platoon mennyi kell még?(Csak 7* karikat néztem!)"
     twcompare = "Használatom: -twcompare @megemlítés <allycode>\nInfo:tw-re kiírja a miénk és a másik guild összehasonlítását!\nSpeed-nél CSAK MODOKAT NÉZ!(megemlítés=saját magad is lehetsz!)!"
-    twcompare2="Használatom: -twcompare2 <allycode1> <allycode2>\nInfo:tw-re kiírja a két guild összehasonlítását!\nSpeed-nél CSAK MODOKAT NÉZ!"
+    twcompare2 = "Használatom: -twcompare2 <allycode1> <allycode2>\nInfo:tw-re kiírja a két guild összehasonlítását!\nSpeed-nél CSAK MODOKAT NÉZ!"
     hasonlito = "Használatom: -hasonlito <karakter név> @megemlítés <allycode>.\nInfo:Két ember karakterét összehasonlítja.Te is lehetsz a megmlített."
     top10 = "Használatom: -top10 <azonosító_szám> @megemlítés <allycode>.\nInfo:azonosító számok: 1-HP,2-Speed,3-Phy.Dmg,4-Spc.Dmg,5-Potency,6-Tenacity\n(Megemlítés saját magad is lehetsz!)"
-    verzio="A bot adott verziószámát adja vissza."
-    magyarazat = [parancsok, allycode, alacsonymodok, mguide, mod, nevek, zeta, events, tbplatoon, twcompare,twcompare2,hasonlito,
-                  top10,verzio]
+    verzio = "A bot adott verziószámát adja vissza."
+    magyarazat = [parancsok, allycode, alacsonymodok, mguide, mod, nevek, zeta, events, tbplatoon, twcompare,
+                  twcompare2, hasonlito,
+                  top10, verzio]
     for q in parancs_list:
         lth = round((j - len(parancs_list[i])) / 2)
         if lth <= 8:
@@ -93,15 +108,13 @@ async def hello(ctx):
         i += 1
 
     await ctx.send(embed=embed)
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Modolas nagyoktól,így kéne modolgatni.Segítségért: -nevek!"
-                )
+@bot.command(pass_context=True, description="Modolas nagyoktól,így kéne modolgatni.Segítségért: -nevek!")
 async def mod(ctx, nev: str):
     if nev in characters:
-        await ctx.message.add_reaction("⌛")
+        await addWaitingReaction(ctx)
         embed = discord.Embed(title="Legjobb modok rá: " + nev, colour=0x00ffff)
         karakterek_01 = requests.get('https://swgoh.gg/api/players/154992793/mods/')
         data = karakterek_01.json()
@@ -803,26 +816,22 @@ async def mod(ctx, nev: str):
             i += 1
 
         await ctx.send(embed=embed)
-        await ctx.message.add_reaction("✅")
+        await addSuccessReaction(ctx)
     else:
         await ctx.send("Gazdám!A megadott név nem szerepel a karakterek között!Nézz rá a -nevek parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Hogyan kéne modokat farmolni/sliceolni?"
-                )
+@bot.command(pass_context=True, description="Hogyan kéne modokat farmolni/sliceolni?")
 async def mguide(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     await ctx.send('http://hh.alitak.hu/assets/mguide.jpg')
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Rosteredben lévő alacsony modokat írja ki."
-                )
+@bot.command(pass_context=True, description="Rosteredben lévő alacsony modokat írja ki.")
 async def alacsonymodok(ctx, user: discord.User):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     seged = user.name
     code = 0
     for key, value in ally_hh.items():
@@ -848,12 +857,10 @@ async def alacsonymodok(ctx, user: discord.User):
         embed.add_field(name=str(i) + ".Mod", value=p, inline=False)
         i += 1
     await ctx.send(embed=embed)
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Rosteredben lévő következő ajánlott zétákat írja ki.(5* és g9+)"
-                )
+@bot.command(pass_context=True, description="Rosteredben lévő következő ajánlott zétákat írja ki.(5* és g9+)")
 async def zeta(ctx, user: discord.User, filter: str):
     seged_tomb = ["pvp", "tw", "tb", "pit", "tank", "sith", "versa"]
     flag = False
@@ -862,17 +869,17 @@ async def zeta(ctx, user: discord.User, filter: str):
             flag = True
     if flag == False:
         await ctx.send("Gazdám! Rossz a filter!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     else:
-        await ctx.message.add_reaction("⌛")
+        await addWaitingReaction(ctx)
         seged = user.name  # ez adja vissza hogy alitak!
         allycodes = 0
         for key, value in ally_hh.items():
             if value == seged:
                 allycodes = key
 
-        zetas = client02.fetchZetas()
-        players = client02.fetchPlayers(allycodes)
+        zetas = swgoh_help.fetchZetas()
+        players = swgoh_help.fetchPlayers(allycodes)
         i = 1
         my_dic = {
 
@@ -901,31 +908,26 @@ async def zeta(ctx, user: discord.User, filter: str):
 
         embed.add_field(name="További filterek", value="<pvp>, <tw>, <tb>,<sith>")
         await ctx.send(embed=embed)
-        await ctx.message.add_reaction("✅")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Ingame naptár.Bővebben: -hello"
-                )
+@bot.command(pass_context=True, description="Ingame naptár.Bővebben: -hello")
 async def events(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
+    await ctx.send("Ezek fognak jönni ebben a hónapban!\n" + "https://swgohevents.com/upcoming")
+    await addSuccessReaction(ctx)
 
-    await ctx.send("Ezek fognak jönni ebben a hónapban!\n"+"https://swgohevents.com/upcoming")
-    await ctx.message.add_reaction("✅")
 
-
-@client.command(pass_context=True,
-                description="Mennyi hiányzik még a tb fullos platoonhoz?"
-                )
+@bot.command(pass_context=True, description="Mennyi hiányzik még a tb fullos platoonhoz?")
 async def tbplatoon(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     my_dic = {}
     with open('geo.txt', 'r') as f:
         for line in f:
             (key, val) = line.split("\t")
             my_dic[key] = int(val)
 
-    raw_guild1 = client02.fetchGuilds(341642861)
+    raw_guild1 = swgoh_help.fetchGuilds(341642861)
     guilddata1 = fetchGuildRoster(raw_guild1)
     member = int(raw_guild1[0]['members'])
 
@@ -944,32 +946,30 @@ async def tbplatoon(ctx):
             embed.add_field(name=str(key), value=str(value), inline=False)
     await ctx.send(embed=embed)
 
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="TW összehasonlító két guild között."
-                )
+@bot.command(pass_context=True, description="TW összehasonlító két guild között.")
 async def twcompare(ctx, user: discord.User, ally2: int):
-    ember = client02.fetchRoster(ally2)
+    ember = swgoh_help.fetchRoster(ally2)
 
     if 'status_code' in ember:
         await ctx.send("Gazdám! Rossz az allycode!Nézz rá a -hello parancsra vagy keress másikat!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     else:
-        await ctx.message.add_reaction("⌛")
+        await addWaitingReaction(ctx)
         seged = user.name
         ally1 = 0
         for key, value in ally_hh.items():
             if value == seged:
                 ally1 = key
 
-        raw_guild1 = client02.fetchGuilds(ally1)
+        raw_guild1 = swgoh_help.fetchGuilds(ally1)
         guilddata1 = fetchGuildRoster(raw_guild1)
         members = raw_guild1[0]['members']
         sum_gp = round(raw_guild1[0]['gp'] / 1000000, 1)
 
-        raw_guild2 = client02.fetchGuilds(ally2)
+        raw_guild2 = swgoh_help.fetchGuilds(ally2)
         guilddata2 = fetchGuildRoster(raw_guild2)
         members_02 = raw_guild2[0]['members']
         sum_gp_02 = round(raw_guild2[0]['gp'] / 1000000, 1)
@@ -978,7 +978,7 @@ async def twcompare(ctx, user: discord.User, ally2: int):
         sum_g13 = 0
         sum_g12_02 = 0
         sum_g13_02 = 0
-        sum_10speed_mods=0
+        sum_10speed_mods = 0
         sum_15speed_mods = 0
         sum_20speed_mods = 0
         sum_25speed_mods = 0
@@ -1009,49 +1009,45 @@ async def twcompare(ctx, user: discord.User, ally2: int):
 
                           "Enfys"
 
-
-
                           ]
 
         karik = {
             0: {'name': 'Darth Traya', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
-                'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             1: {'name': 'Darth Revan', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
-                'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             2: {'name': 'Jedi Knight Revan', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
-                'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             3: {'name': 'Darth Malak', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
-                'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             4: {'name': "Han's Millennium Falcon", '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             5: {'name': 'Geonosian Brood Alpha', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             6: {'name': 'Rey (Jedi Training)', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             7: {'name': 'Padmé Amidala', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             8: {'name': 'C-3PO', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             9: {'name': 'Commander Luke Skywalker', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             10: {'name': 'Chewbacca', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                 'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                 'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
 
             11: {'name': 'General Grievous', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                 'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                 'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             12: {'name': 'Mother Talzin', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
-                 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             13: {'name': 'Asajj Ventress', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0, 'zz': 0,
                  'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             14: {'name': 'Kylo Ren (Unmasked)', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                 'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                 'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
             15: {'name': 'Bossk', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                 'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0},
+                 'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0},
 
             16: {'name': 'Enfys Nest', '5*': 0, '6*': 0, '7*': 0, 'G11': 0, 'G12': 0, 'G13': 0, 'z': 0,
-                 'zz': 0, 'zzz': 0,'60-80':0,'80-100':0,'100+':0}
-
-
+                 'zz': 0, 'zzz': 0, '60-80': 0, '80-100': 0, '100+': 0}
 
         }
 
@@ -1226,12 +1222,11 @@ async def twcompare(ctx, user: discord.User, ally2: int):
                         if seged_speed >= 100:
                             q['100+'] += 1
 
-
         embed = discord.Embed(title=raw_guild1[0]['name'] + ' vs ' + raw_guild2[0]['name'],
                               url="https://swgoh.gg/p/" + str(raw_guild2[0]['roster'][0]['allyCode']) + "/",
                               color=0x7289da)
 
-        lth= 6
+        lth = 6
         embed.add_field(name='=========== Összefoglaló ===========', value=
         '```Létszám         ::  ' + ' ' * (lth - len(str(members))) + str(
             members) + ' vs ' + str(members_02) + '\n' +
@@ -1255,12 +1250,12 @@ async def twcompare(ctx, user: discord.User, ally2: int):
 
         + '\n' +
         '25+ spd mod secs::  ' + ' ' * (lth - len(str(sum_25speed_mods))) + str(
-            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods_02))+
+            '{:,}'.format(sum_25speed_mods)) + ' vs ' + str('{:,}'.format(sum_25speed_mods_02)) +
 
         '```')
 
         i = 0
-        j= 30
+        j = 30
         for q in character_list:
             lth = round((j - len(character_list[i])) / 2)
             if lth <= 8:
@@ -1308,7 +1303,7 @@ async def twcompare(ctx, user: discord.User, ally2: int):
 
             'zzz  :: ' + ' ' * round(1 / len(str(karik[i]['zzz']))) + str(karik[i]['zzz']) + ' vs ' + str(
                 karik_02[i]['zzz'])
-            +'\n' +
+            + '\n' +
             'Spd(60-80)  :: ' + ' ' * round(1 / len(str(karik[i]['60-80']))) + str(karik[i]['60-80']) + ' vs ' + str(
                 karik_02[i]['60-80'])
             + '\n' +
@@ -1321,28 +1316,25 @@ async def twcompare(ctx, user: discord.User, ally2: int):
             i += 1
 
         await ctx.send(embed=embed)
-        await ctx.message.add_reaction("✅")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="TW összehasonlító két guild között."
-                )
+@bot.command(pass_context=True, description="TW összehasonlító két guild között.")
 async def twcompare2(ctx, ally1: int, ally2: int):
-    ember = client02.fetchRoster(ally1)
+    ember = swgoh_help.fetchRoster(ally1)
 
     if 'status_code' in ember:
         await ctx.send("Gazdám! Rossz az allycode!Nézz rá a -hello parancsra vagy keress másikat!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     else:
-        await ctx.message.add_reaction("⌛")
+        await addWaitingReaction(ctx)
 
-
-        raw_guild1 = client02.fetchGuilds(ally1)
+        raw_guild1 = swgoh_help.fetchGuilds(ally1)
         guilddata1 = fetchGuildRoster(raw_guild1)
         members = raw_guild1[0]['members']
         sum_gp = round(raw_guild1[0]['gp'] / 1000000, 1)
 
-        raw_guild2 = client02.fetchGuilds(ally2)
+        raw_guild2 = swgoh_help.fetchGuilds(ally2)
         guilddata2 = fetchGuildRoster(raw_guild2)
         members_02 = raw_guild2[0]['members']
         sum_gp_02 = round(raw_guild2[0]['gp'] / 1000000, 1)
@@ -1522,7 +1514,6 @@ async def twcompare2(ctx, ally1: int, ally2: int):
                                     if z["unitStat"] == "UNITSTATSPEED":
                                         seged_speed += z["value"]
 
-
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
                         if seged_speed >= 80 and seged_speed < 100:
@@ -1587,7 +1578,6 @@ async def twcompare2(ctx, ally1: int, ally2: int):
 
                                     if z["unitStat"] == "UNITSTATSPEED":
                                         seged_speed += z["value"]
-
 
                         if seged_speed >= 60 and seged_speed < 80:
                             q['60-80'] += 1
@@ -1690,18 +1680,16 @@ async def twcompare2(ctx, ally1: int, ally2: int):
             i += 1
 
         await ctx.send(embed=embed)
-        await ctx.message.add_reaction("✅")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Mod parancshoz segédlet,hogy hívd meg az adott karaktert."
-                )
+@bot.command(pass_context=True, description="Mod parancshoz segédlet,hogy hívd meg az adott karaktert.")
 async def nevek(ctx, kezdo: str):
     if len(kezdo) != 1:
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     else:
-        await ctx.message.add_reaction("⌛")
+        await addWaitingReaction(ctx)
         embed = discord.Embed(title="Nevek amik specifikált karakterrel kezdődnek!")
         od = collections.OrderedDict(sorted(characters.items()))
         seged = kezdo[0]
@@ -1712,30 +1700,28 @@ async def nevek(ctx, kezdo: str):
                 i += 1
 
         await ctx.send(embed=embed)
-        await ctx.message.add_reaction("✅")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Visszaadja az allycodeod.")
+@bot.command(pass_context=True, description="Visszaadja az allycodeod.")
 async def allycode(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     seged = format(ctx.message.author.name)
     embed = discord.Embed()
     for key, value in ally_hh.items():
         if value == seged:
             embed.add_field(name="Allycodeod: ", value=str(key))
     await ctx.send(embed=embed)
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Két profil adott karakterét hasonlítja össze.")
+@bot.command(pass_context=True, description="Két profil adott karakterét hasonlítja össze.")
 async def hasonlito(ctx, karakter: str, user: discord.User, ally: int):
     if karakter in characters:
         karakter_02 = requests.get(
             'https://crinolo-swgoh.glitch.me/statCalc/api/player/' + str(ally) + '?flags=gameStyle')
         if karakter_02.status_code == 200:
-            await ctx.message.add_reaction("⌛")
+            await addWaitingReaction(ctx)
             seged_nev = characters[karakter]
             seged = user.name
             ally1 = 0
@@ -1869,24 +1855,23 @@ async def hasonlito(ctx, karakter: str, user: discord.User, ally: int):
             'zzz: ' + str(hh_szotar[0]['zzz']) + ' vs ' + str(masik_ember[0]['zzz'])
             + '```', inline=True)
             await ctx.send(embed=embed)
-            await ctx.message.add_reaction("✅")
+            await addSuccessReaction(ctx)
         else:
             await ctx.send("Gazdám! Rossz az allycode!Nézz rá arra az allycode-ra!")
-            await ctx.message.add_reaction("❌")
+            await addSuccessReaction(ctx)
 
 
     else:
         await ctx.send("Gazdám! Rossz a karakter név!Nézz rá a -nevek parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
-@client.command(pass_context=True,
-                description="Két profil adott top10 karaktereit írja ki,adott filterrel.")
+@bot.command(pass_context=True, description="Két profil adott top10 karaktereit írja ki,adott filterrel.")
 async def top10(ctx, azon: int, user: discord.User, ally: int):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     if azon < 1 or azon > 6:
         await ctx.send("Gazdám! Rossz az azonosító!Nézz rá arra a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
     else:
         karakter_02 = requests.get(
@@ -2032,107 +2017,102 @@ async def top10(ctx, azon: int, user: discord.User, ally: int):
                 inline=False)
 
             await ctx.send(embed=embed)
-            await ctx.message.add_reaction("✅")
-
-
-
-
-
-
+            await addSuccessReaction(ctx)
         else:
             await ctx.send("Gazdám! Rossz az allycode!Nézz rá arra az allycode-ra!")
-            await ctx.message.add_reaction("❌")
+            await addSuccessReaction(ctx)
 
-@client.command(pass_context=True,
-                description="Bot verziószáma")
+
+@bot.command(pass_context=True, description="Bot verziószáma")
 async def verzio(ctx):
-    await ctx.message.add_reaction("⌛")
+    await addWaitingReaction(ctx)
     await ctx.send("V1.1")
-    await ctx.message.add_reaction("✅")
+    await addSuccessReaction(ctx)
+
 
 # Error kezelés!!
 
-@client.event
+@bot.event
 async def on_message(message):
     message.content = message.content.lower()
-    await client.process_commands(message)
+    await bot.process_commands(message)
 
 
-@client.event
+@bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("Gazdám!Nincs ilyen parancs!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @mod.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @alacsonymodok.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @zeta.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @twcompare.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @nevek.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @hasonlito.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
 @top10.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await ctx.message.add_reaction("❌")
+        await addSuccessReaction(ctx)
 
 
-client.run(TOKEN)
+bot.run(os.getenv("token"))
