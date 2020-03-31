@@ -819,7 +819,7 @@ async def mod(ctx, nev: str):
         await addSuccessReaction(ctx)
     else:
         await ctx.send("Gazdám!A megadott név nem szerepel a karakterek között!Nézz rá a -nevek parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @bot.command(pass_context=True, description="Hogyan kéne modokat farmolni/sliceolni?")
@@ -869,7 +869,7 @@ async def zeta(ctx, user: discord.User, filter: str):
             flag = True
     if flag == False:
         await ctx.send("Gazdám! Rossz a filter!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     else:
         await addWaitingReaction(ctx)
         seged = user.name  # ez adja vissza hogy alitak!
@@ -955,7 +955,7 @@ async def twcompare(ctx, user: discord.User, ally2: int):
 
     if 'status_code' in ember:
         await ctx.send("Gazdám! Rossz az allycode!Nézz rá a -hello parancsra vagy keress másikat!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     else:
         await addWaitingReaction(ctx)
         seged = user.name
@@ -1325,7 +1325,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
 
     if 'status_code' in ember:
         await ctx.send("Gazdám! Rossz az allycode!Nézz rá a -hello parancsra vagy keress másikat!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     else:
         await addWaitingReaction(ctx)
 
@@ -1687,7 +1687,7 @@ async def twcompare2(ctx, ally1: int, ally2: int):
 async def nevek(ctx, kezdo: str):
     if len(kezdo) != 1:
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     else:
         await addWaitingReaction(ctx)
         embed = discord.Embed(title="Nevek amik specifikált karakterrel kezdődnek!")
@@ -1858,12 +1858,12 @@ async def hasonlito(ctx, karakter: str, user: discord.User, ally: int):
             await addSuccessReaction(ctx)
         else:
             await ctx.send("Gazdám! Rossz az allycode!Nézz rá arra az allycode-ra!")
-            await addSuccessReaction(ctx)
+            await addErrorReaction(ctx)
 
 
     else:
         await ctx.send("Gazdám! Rossz a karakter név!Nézz rá a -nevek parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @bot.command(pass_context=True, description="Két profil adott top10 karaktereit írja ki,adott filterrel.")
@@ -1871,7 +1871,7 @@ async def top10(ctx, azon: int, user: discord.User, ally: int):
     await addWaitingReaction(ctx)
     if azon < 1 or azon > 6:
         await ctx.send("Gazdám! Rossz az azonosító!Nézz rá arra a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
     else:
         karakter_02 = requests.get(
@@ -2020,7 +2020,7 @@ async def top10(ctx, azon: int, user: discord.User, ally: int):
             await addSuccessReaction(ctx)
         else:
             await ctx.send("Gazdám! Rossz az allycode!Nézz rá arra az allycode-ra!")
-            await addSuccessReaction(ctx)
+            await addErrorReaction(ctx)
 
 
 @bot.command(pass_context=True, description="Bot verziószáma")
@@ -2042,77 +2042,77 @@ async def on_message(message):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("Gazdám!Nincs ilyen parancs!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @mod.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @alacsonymodok.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @zeta.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @twcompare.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @nevek.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @hasonlito.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 @top10.error
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Gazdám! Kevés a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
     if isinstance(error, commands.BadArgument):
         await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addSuccessReaction(ctx)
+        await addErrorReaction(ctx)
 
 
 bot.run(os.getenv("token"))
