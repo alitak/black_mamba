@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
-import requests
-from collections import OrderedDict
 import collections
 import operator
-import dotenv
 import os
+import sys
+from collections import OrderedDict
+
+import discord
+import dotenv
+import requests
+from discord.ext import commands
+
+from assets.allycode_hh import ally_hh
 from assets.api_swgoh_helper import api_swgoh_help, settings
 from assets.characters_aliasos import characters
-from assets.allycode_hh import ally_hh
-import discord
-from discord.ext import commands
+import assets.black_mamba as black_mamba
+
+try:
+    str(sys.argv[1])
+    debug = True
+except IndexError:
+    debug = False
 
 dotenv.load_dotenv()
 swgoh_help = api_swgoh_help(settings(os.getenv('user'), os.getenv('password')))
@@ -17,16 +27,22 @@ bot = commands.Bot(command_prefix='-')
 
 
 async def addSuccessReaction(ctx):
+    if debug:
+        print("success reaction")
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("✅")
 
 
 async def addErrorReaction(ctx):
+    if debug:
+        print("error reaction")
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("❌")
 
 
 async def addWaitingReaction(ctx):
+    if debug:
+        print("waiting reaction")
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("⌛")
 
@@ -48,6 +64,8 @@ def fetchGuildRoster(raw_guild):
 async def on_ready():
     game = discord.Game("-hello")
     await bot.change_presence(status=discord.Status.online, activity=game)
+    if debug:
+        print("ready")
 
 
 @bot.command(pass_context=True, description="teszt")
@@ -60,53 +78,14 @@ async def a(ctx):
 
 @bot.command(pass_context=True, description="Üdvözlő és parancs információs.")
 async def hello(ctx):
+    if debug:
+        print("command hello")
     await addWaitingReaction(ctx)
 
     embed = discord.Embed(title="Szia HUNted HUNt3rs barátom!\nHasználati útmutatóm\n", color=0x00ffff)
-    embed.add_field(name="Hogyan futtathatsz?",
-                    value='```' + "Használatom '-' előjellel majd utána paranccsal történik." + '```')
-
-    j = 30
-    i = 0
-    parancs_list = ["Parancsok",
-                    "Allycode",
-                    "Alacsonymodok",
-                    "Mod Guide",
-                    "Mod",
-                    "Nevek",
-                    "Zeta",
-                    "Events",
-                    "TBPlatoon",
-                    "TWCompare",
-                    "TWCompare2",
-                    "Hasonlito",
-                    "Top10",
-                    "verzio"]
-    parancsok = "Továbbiakban a parancsaimról lesz szó!"
-    allycode = "A parancs hívott allycode-ját adja vissza."
-    alacsonymodok = "Használatom: -alacsonymodok @megemlítés\nInfo:Ötcsillagos alattiakat listázok ki ezzel.(megemlítés=saját magad is lehetsz!)"
-    mod = "Használatom: -mod <név>\nInfo:Ajánlatos a -nevek parancsot futtatni lehet elsőre nem találod meg,ami kell!"
-    nevek = "Használatom: -nevek <betű>.\nInfo:Ez kilistázza az adott betűvel rendelkezőt,ha esetlegn nem találnád,aki kell!"
-    mguide = "Használatom: -mguide\nInfo:Egy farmolási kép terv a modolásaidhoz!Használd bátran gazdám!"
-    zeta = "Használatom:-zeta @megemlítés <filter>\nInfo:Használd először kérlek a <pvp> filter-t.(továbbiak az első futás után láthatóak,megemlítés=saját magad is lehetsz!)"
-    events = "Használatom:-events\nInfo:Ingame kalendár!Azokat mutatja,amik ingame már bejelentettek."
-    tbplatoon = "Használatom:-tbplatoon\nInfo:Geo TB Platoon mennyi kell még?(Csak 7* karikat néztem!)"
-    twcompare = "Használatom: -twcompare @megemlítés <allycode>\nInfo:tw-re kiírja a miénk és a másik guild összehasonlítását!\nSpeed-nél CSAK MODOKAT NÉZ!(megemlítés=saját magad is lehetsz!)!"
-    twcompare2 = "Használatom: -twcompare2 <allycode1> <allycode2>\nInfo:tw-re kiírja a két guild összehasonlítását!\nSpeed-nél CSAK MODOKAT NÉZ!"
-    hasonlito = "Használatom: -hasonlito <karakter név> @megemlítés <allycode>.\nInfo:Két ember karakterét összehasonlítja.Te is lehetsz a megmlített."
-    top10 = "Használatom: -top10 <azonosító_szám> @megemlítés <allycode>.\nInfo:azonosító számok: 1-HP,2-Speed,3-Phy.Dmg,4-Spc.Dmg,5-Potency,6-Tenacity\n(Megemlítés saját magad is lehetsz!)"
-    verzio = "A bot adott verziószámát adja vissza."
-    magyarazat = [parancsok, allycode, alacsonymodok, mguide, mod, nevek, zeta, events, tbplatoon, twcompare,
-                  twcompare2, hasonlito,
-                  top10, verzio]
-    for q in parancs_list:
-        lth = round((j - len(parancs_list[i])) / 2)
-        if lth <= 8:
-            lth += 2
-        embed.add_field(name='=' * (lth - 2) + ' ' + parancs_list[i] + ' ' + '=' * (lth - 2),
-                        value='```' + str(magyarazat[i]) + '```', inline=False)
-        i += 1
-
+    embed.add_field(name="Hogyan futtathatsz?", value='```' + "Használatom '-' előjellel majd utána paranccsal történik." + '```')
+    for title, description in black_mamba.commands.items():
+        embed.add_field(name='===== ' + title + ' =====', value='```' + description + '```', inline=False)
     await ctx.send(embed=embed)
     await addSuccessReaction(ctx)
 
