@@ -16,3 +16,56 @@ commands = OrderedDict([
     ("Top10", "-top10 <azonosító_szám> @megemlítés <allycode>.\nazonosító számok: 1-HP,2-Speed,3-Phy.Dmg,4-Spc.Dmg,5-Potency,6-Tenacity"),
     ("verzio", "A bot adott verziószámát adja vissza."),
 ])
+
+mod_dict = {
+    'DeadShot': {
+        'négyzet': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'nyíl': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'deltoid': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'háromszög': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'kör': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'kereszt': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""}
+    },
+    'ìN Laci Baci':
+        {'négyzet': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+         'nyíl': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+         'deltoid': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+         'háromszög': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+         'kör': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+         'kereszt': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""}
+         },
+    'Lacca': {
+        'négyzet': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'nyíl': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'deltoid': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'háromszög': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'kör': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""},
+        'kereszt': {"primary": "", "sec1": "", "sec2": "", "sec3": "", "sec4": ""}
+    },
+}
+
+mod_users = OrderedDict([
+    ("DeadShot", "https://swgoh.gg/api/players/154992793/mods/"),
+    ("ìN Laci Baci", "https://swgoh.gg/api/players/832266886/mods/"),
+    ("Lacca", "https://swgoh.gg/api/players/146197219/mods/"),
+])
+
+mod_set = {
+    1: "HP",
+    2: "Offense",
+    3: "Def",
+    4: "Speed",
+    5: "CC",
+    6: "CD",
+    7: "Potency",
+    8: "Tenacity",
+}
+
+mod_slot = {
+    1: "négyzet",
+    2: "nyíl",
+    3: "deltoid",
+    4: "háromszög",
+    5: "kör",
+    6: "kereszt",
+}
