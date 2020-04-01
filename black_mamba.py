@@ -26,16 +26,22 @@ swgoh_help = api_swgoh_help(settings(os.getenv('user'), os.getenv('password')))
 bot = commands.Bot(command_prefix='-')
 
 
-async def addSuccessReaction(ctx):
+async def addSuccessReaction(ctx, embed="", message=""):
     if debug:
         print("success reaction")
+    if embed != "":
+        await ctx.send(embed=embed)
+    if message != "":
+        await ctx.send(message)
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("✅")
 
 
-async def addErrorReaction(ctx):
+async def addErrorReaction(ctx, message=""):
     if debug:
         print("error reaction")
+    if message != "":
+        await ctx.send(message)
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("❌")
 
@@ -114,22 +120,19 @@ async def mod(ctx, nev: str):
             for key, slot in black_mamba.mod_slot.items():
                 result = result + slot + "\n" + black_mamba.mod_dict[name][slot]["primary"] + "\n"
                 for i in [0, 1, 2, 3]:
-                    result = result + black_mamba.mod_dict[name][slot]["sec" + str(i+1)] + "\n"
+                    result = result + black_mamba.mod_dict[name][slot]["sec" + str(i + 1)] + "\n"
                 result = result + "\n"
-            embed.add_field(name='=== ' + name + ' ===', value='```' + result + '```', inline=True)
+            embed.add_field(name='===== ' + name + ' ====', value='```' + result + '```', inline=True)
 
-        await ctx.send(embed=embed)
-        await addSuccessReaction(ctx)
+        await addSuccessReaction(ctx, embed)
     else:
-        await ctx.send("Gazdám!A megadott név nem szerepel a karakterek között!Nézz rá a -nevek parancsra!")
-        await addErrorReaction(ctx)
+        await addErrorReaction(ctx, "Gazdám!A megadott név nem szerepel a karakterek között!Nézz rá a -nevek parancsra!")
 
 
 @bot.command(pass_context=True, description="Hogyan kéne modokat farmolni/sliceolni?")
 async def mguide(ctx):
     await addWaitingReaction(ctx)
-    await ctx.send('http://hh.alitak.hu/assets/mguide.jpg')
-    await addSuccessReaction(ctx)
+    await addSuccessReaction(ctx, "", "http://hh.alitak.hu/assets/mguide.jpg")
 
 
 @bot.command(pass_context=True, description="Rosteredben lévő alacsony modokat írja ki.")
