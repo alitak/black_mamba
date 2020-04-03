@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+
+  black_mamba:
+    container_name: black_mamba
+    image: black_mamba
+    restart: unless-stopped
+    environment:
+      - user=
+      - password=
+      - token=

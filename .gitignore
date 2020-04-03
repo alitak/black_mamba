@@ -1,4 +1,4 @@
-.env
 /__pycache__
 /.idea
-/assets/__pycache__
+/src/assets/__pycache__
+docker-compose.yaml
