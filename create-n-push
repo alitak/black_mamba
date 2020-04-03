@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+docker build -t harbor.dock1.diff.hu/black_mamba/black_mamba:latest .
+docker push harbor.dock1.diff.hu/black_mamba/black_mamba:latest
