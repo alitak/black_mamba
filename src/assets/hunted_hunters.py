@@ -1,3 +1,5 @@
+guild_ally = 341642861;
+
 ally_codes = {
     "AdamRose":			"389847638",
     "Ajjaj Ventris":	"922523414",

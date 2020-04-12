@@ -5,12 +5,12 @@ import os
 import sys
 from collections import OrderedDict
 
+import discord
+from discord.ext import commands
+import requests
 import assets.hunted_hunters as guild
 import assets.black_mamba as black_mamba
-import discord
-import requests
 from assets.api_swgoh_helper import api_swgoh_help, settings
-from discord.ext import commands
 
 try:
     str(sys.argv[1])
@@ -30,7 +30,8 @@ def debug(message):
 def shortener(string):
     return str(string) \
         .replace("Critical Chance", "Crit Cha") \
-        .replace("Critical Damage", "Crit Dam")
+        .replace("Critical Damage", "Crit Dam") \
+        .replace("Critical Avoidance", "Crit Avoid")
 
 
 async def addSuccessReaction(ctx, embed="", message=""):
@@ -81,8 +82,7 @@ async def on_ready():
 async def a(ctx):
     await addWaitingReaction(ctx)
     embed = discord.Embed(title="TESZT", color=0xffffff)
-    await ctx.send(embed=embed)
-    await addSuccessReaction(ctx)
+    await addSuccessReaction(ctx, embed)
 
 
 @bot.command(pass_context=True, description="Üdvözlő és parancs információs.")
@@ -91,14 +91,13 @@ async def hello(ctx):
     await addWaitingReaction(ctx)
 
     embed = discord.Embed(title="Szia HUNted HUNt3rs barátom!\nHasználati útmutatóm\n", color=0x00ffff)
-    embed.add_field(name="Hogyan futtathatsz?", value="```" + "Használatom " - " előjellel majd utána paranccsal történik." + "```")
+    embed.add_field(name="Hogyan futtathatsz?", value="```" + "Használatom '-' előjellel majd utána paranccsal történik." + "```")
     for title, description in black_mamba.commands.items():
         embed.add_field(name="===== " + title + " =====", value="```" + description + "```", inline=False)
-    await ctx.send(embed=embed)
-    await addSuccessReaction(ctx)
+    await addSuccessReaction(ctx, embed)
 
 
-@bot.command(pass_context=True, description="Modolas nagyoktól,így kéne modolgatni.Segítségért: -nevek!")
+@bot.command(pass_context=True, description="Modolas nagyoktól,így kéne modolgatni. Segítségért: -nevek!")
 async def mod(ctx, nev: str):
     if nev in black_mamba.characters_by_name:
         await addWaitingReaction(ctx)
@@ -184,35 +183,36 @@ async def events(ctx):
     await addSuccessReaction(ctx, "Ezek fognak jönni ebben a hónapban!\n" + "https://swgohevents.com/upcoming")
 
 
-@bot.command(pass_context=True, description="Mennyi hiányzik még a tb fullos platoonhoz?")
-async def tbplatoon(ctx):
+@bot.command(pass_context=True, description="Mennyi karakter hiányzik még a tb fullos platoonhoz?")
+async def tbplatoon(ctx, side: str):
     await addWaitingReaction(ctx)
-    my_dic = {}
-    with open("geo.txt", "r") as f:
-        for line in f:
-            (key, val) = line.split("\t")
-            my_dic[key] = int(val)
-
-    raw_guild1 = swgoh_help.fetchGuilds(341642861)
-    guilddata1 = fetchGuildRoster(raw_guild1)
-    member = int(raw_guild1[0]["members"])
-
-    for i in range(0, member):
-
-        for key in my_dic:
-            for p in guilddata1[i]["roster"]:
-                if key == p["nameKey"] and p["rarity"] == 7:
-                    my_dic[key] -= 1
-
-    embed = discord.Embed(title="Ennyi kell még gazdám Geora!" + "\n", description="----------")
-    sorted_x = sorted(my_dic.items(), key=operator.itemgetter(1))
-
-    for key, value in sorted_x:
-        if (value > 0):
-            embed.add_field(name=str(key), value=str(value), inline=False)
-    await ctx.send(embed=embed)
-
-    await addSuccessReaction(ctx)
+    # if side == "light":
+    #     missing_characters = black_mamba.geo_ls_characters
+    # else:
+    #     missing_characters = black_mamba.geo_ds_characters
+    # debug(side)
+    # debug(guild.guild_ally)
+    #
+    # raw_guild1 = swgoh_help.fetchGuilds(int(guild.guild_ally))
+    # print(raw_guild1)
+    # print(swgoh_help.fetchGuilds(341642861))
+    # guilddata1 = fetchGuildRoster(raw_guild1)
+    # member = int(raw_guild1[0]["members"])
+    #
+    # for i in range(0, member):
+    #     for key in missing_characters:
+    #         for p in guilddata1[i]["roster"]:
+    #             if key == p["nameKey"] and p["rarity"] == 7:
+    #                 guild.geo_ds_characters[key] -= 1
+    #
+    embed = discord.Embed(title="Szar az swgoh api végpont, parancs offolva átmenetileg" + "\n", description="----------")
+    # embed = discord.Embed(title="Ennyi kell még gazdám Geora!" + "\n", description="----------")
+    # sorted_x = sorted(guild.geo_ds_characters.items(), key=operator.itemgetter(1))
+    #
+    # for key, value in sorted_x:
+    #     if value > 0:
+    #         embed.add_field(name=str(key), value=str(value), inline=False)
+    await addSuccessReaction(ctx, embed)
 
 
 @bot.command(pass_context=True, description="TW összehasonlító két guild között.")
