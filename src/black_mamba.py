@@ -23,6 +23,12 @@ swgoh_help = api_swgoh_help(settings(os.environ["user"], os.environ["password"])
 bot = commands.Bot(command_prefix="-")
 
 
+def storeMistypedChars(character):
+    log_file = open("mistyped.log", "a")
+    log_file.write(character + "\n")
+    log_file.close();
+
+
 def debug(message, method=""):
     if "" == method:
         method_name = inspect.getframeinfo(inspect.currentframe().f_back)[2]
@@ -106,15 +112,20 @@ async def hello(ctx):
 
 @bot.command(pass_context=True, description="Modolas nagyoktól,így kéne modolgatni. Segítségért: -nevek!")
 async def mod(ctx, nev: str):
-    if nev in black_mamba.characters_by_name:
+    if nev in black_mamba.characters_by_name or nev in black_mamba.characters_alias:
         await addWaitingReaction(ctx)
-        embed = discord.Embed(title="Legjobb modok rá: " + nev, colour=0x00ffff)
+        try:
+            selected_character = black_mamba.characters_by_name[nev]
+        except KeyError:
+            selected_character = black_mamba.characters_alias[nev]
+
+        embed = discord.Embed(title="Legjobb modok rá: " + black_mamba.characters_by_code[selected_character], colour=0x00ffff)
         for name, ally_code in black_mamba.mod_users.items():
             debug(name)
             chars = requests.get(black_mamba.swgoh_api["mods"].replace("%ALLYCODE%", ally_code))
             data = chars.json()
             for p in data["mods"]:
-                if black_mamba.characters_by_name[nev] == p["character"]:
+                if selected_character == p["character"]:
                     black_mamba.mod_dict[name][black_mamba.mod_slot[p["slot"]]]["primary"] = shortener(str(("[" + str(black_mamba.mod_set[p["set"]]) + "]" + "\n" + p["primary_stat"]["name"] + " " + p["primary_stat"]["display_value"])))
                     for i in [0, 1, 2, 3]:
                         black_mamba.mod_dict[name][black_mamba.mod_slot[p["slot"]]]["sec" + str(i + 1)] = shortener(p["secondary_stats"][i]["name"] + " " + p["secondary_stats"][i]["display_value"])
@@ -131,7 +142,8 @@ async def mod(ctx, nev: str):
 
         await addSuccessReaction(ctx, embed)
     else:
-        await addErrorReaction(ctx, "Gazdám!A megadott név nem szerepel a karakterek között!Nézz rá a -nevek parancsra!")
+        storeMistypedChars(nev)
+        await addErrorReaction(ctx, "Gazdám! A megadott név nem szerepel a karakterek között! Nézz rá a -nevek parancsra!")
 
 
 @bot.command(pass_context=True, description="Hogyan kéne modokat farmolni/sliceolni?")

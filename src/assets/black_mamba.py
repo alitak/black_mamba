@@ -262,6 +262,10 @@ characters_by_name = {
     "zeb": "ZEBS3",
 }
 
+characters_alias = {
+    "ajaj": "ASAJVENTRESS",
+}
+
 characters_by_code = {
     "AAYLASECURA": "Aayla Secura",
     "ADMIRALACKBAR": "Admiral Ackbar",
