@@ -2,3 +2,4 @@
 /.idea
 /src/assets/__pycache__
 docker-compose.yaml
+black_mamba.log

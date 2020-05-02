@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import collections
-import operator
+import inspect
 import os
 import sys
 from collections import OrderedDict
+from datetime import datetime
 
 import discord
 from discord.ext import commands
@@ -22,7 +23,14 @@ swgoh_help = api_swgoh_help(settings(os.environ["user"], os.environ["password"])
 bot = commands.Bot(command_prefix="-")
 
 
-def debug(message):
+def debug(message, method=""):
+    if "" == method:
+        method_name = inspect.getframeinfo(inspect.currentframe().f_back)[2]
+    else:
+        method_name = method
+    log_file = open("black_mamba.log", "a")
+    log_file.write(str(datetime.now()) + ": " + str(method_name) + " | " + message + "\n")
+    log_file.close();
     if debug:
         print(message)
 
@@ -35,7 +43,7 @@ def shortener(string):
 
 
 async def addSuccessReaction(ctx, embed="", message=""):
-    debug("success reaction")
+    debug("success reaction", inspect.getframeinfo(inspect.currentframe().f_back)[2])
     if embed != "":
         await ctx.send(embed=embed)
     if message != "":
@@ -45,7 +53,7 @@ async def addSuccessReaction(ctx, embed="", message=""):
 
 
 async def addErrorReaction(ctx, message=""):
-    debug("error reaction")
+    debug("error reaction", inspect.getframeinfo(inspect.currentframe().f_back)[2])
     if message != "":
         await ctx.send(message)
     await ctx.message.clear_reactions()
@@ -53,13 +61,12 @@ async def addErrorReaction(ctx, message=""):
 
 
 async def addWaitingReaction(ctx):
-    debug("waiting reaction")
+    debug("waiting reaction", inspect.getframeinfo(inspect.currentframe().f_back)[2])
     await ctx.message.clear_reactions()
     await ctx.message.add_reaction("⌛")
 
 
 def fetchGuildRoster(raw_guild):
-    guilddata = []
     chardata_ally = []
     i: int = 0
     for a in raw_guild[0]["roster"]:
@@ -150,7 +157,7 @@ async def alacsonymodok(ctx, user: discord.User):
 @bot.command(pass_context=True, description="Rosteredben lévő következő ajánlott zétákat írja ki. (5* és g9+)")
 async def zeta(ctx, user: discord.User, filter: str):
     await addWaitingReaction(ctx)
-    debug(filter)
+    debug(user.name + " | " + filter)
 
     if filter not in black_mamba.available_filters:
         await addErrorReaction(ctx, "Gazdám! Rossz a filter!Nézz rá a -hello parancsra!")
@@ -158,9 +165,9 @@ async def zeta(ctx, user: discord.User, filter: str):
 
     embed = discord.Embed(title="Zéta ajánló: " + filter + " szerint", description="Allycode: " + str(guild.ally_codes[user.name]) + "\n(Minél kisebb a szám annál jobb!)\n" + "-" * 26, color=0x00ffff)
     zetas = swgoh_help.fetchZetas()
-    debug("zetas gathered")
+    debug(user.name + " | " + "zetas gathered")
     player = swgoh_help.fetchPlayers(int(guild.ally_codes[user.name]))
-    debug("player gathered")
+    debug(user.name + " | " + "player gathered")
 
     characters = {}
     for p in player[0]["roster"]:
@@ -946,19 +953,17 @@ async def twcompare2(ctx, ally1: int, ally2: int):
         await addSuccessReaction(ctx)
 
 
-@bot.command(pass_context=True, description="Mod parancshoz segédlet,hogy hívd meg az adott karaktert.")
+@bot.command(pass_context=True, description="Mod parancshoz segédlet, hogy hívd meg az adott karaktert.")
 async def nevek(ctx, kezdo: str):
     if len(kezdo) != 1:
-        await ctx.send("Gazdám! Rossz a bemenet!Nézz rá a -hello parancsra!")
-        await addErrorReaction(ctx)
+        await addErrorReaction(ctx, "Gazdám! Rossz a bemenet! Nézz rá a -hello parancsra!")
     else:
         await addWaitingReaction(ctx)
-        embed = discord.Embed(title="Nevek amik specifikált karakterrel kezdődnek!")
+        embed = discord.Embed(title="Nevek, amik a megadott karakterrel kezdődnek!")
         od = collections.OrderedDict(sorted(black_mamba.characters_by_name.items()))
-        seged = kezdo[0]
         i = 1
         for key in od.keys():
-            if key.startswith(seged):
+            if key.startswith(kezdo[0]):
                 embed.add_field(name=str(i), value=str(key), inline=False)
                 i += 1
 
