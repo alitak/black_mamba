@@ -264,6 +264,9 @@ characters_by_name = {
 
 characters_alias = {
     "ajaj": "ASAJVENTRESS",
+    "asaj": "ASAJVENTRESS",
+    "ashoka": "AHSOKATANO",
+    "asoka": "AHSOKATANO",
 }
 
 characters_by_code = {

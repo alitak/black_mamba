@@ -4,3 +4,4 @@
 docker-compose.yaml
 black_mamba.log
 mistyped.log
+mistyped_user.log

@@ -9,7 +9,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 import requests
-import assets.hunted_hunters as guild
+import assets.guild as guild
 import assets.black_mamba as black_mamba
 from assets.api_swgoh_helper import api_swgoh_help, settings
 
@@ -175,11 +175,16 @@ async def zeta(ctx, user: discord.User, filter: str):
         await addErrorReaction(ctx, "Gazdám! Rossz a filter!Nézz rá a -hello parancsra!")
         return
 
-    embed = discord.Embed(title="Zéta ajánló: " + filter + " szerint", description="Allycode: " + str(guild.ally_codes[user.name]) + "\n(Minél kisebb a szám annál jobb!)\n" + "-" * 26, color=0x00ffff)
-    zetas = swgoh_help.fetchZetas()
-    debug(user.name + " | " + "zetas gathered")
-    player = swgoh_help.fetchPlayers(int(guild.ally_codes[user.name]))
-    debug(user.name + " | " + "player gathered")
+    try:
+        embed = discord.Embed(title="Zéta ajánló: " + filter + " szerint", description="Allycode: " + str(guild.ally_codes[user.name]) + "\n(Minél kisebb a szám annál jobb!)\n" + "-" * 26, color=0x00ffff)
+        zetas = swgoh_help.fetchZetas()
+        debug(user.name + " | " + "zetas gathered")
+        player = swgoh_help.fetchPlayers(int(guild.ally_codes[user.name]))
+        debug(user.name + " | " + "player gathered")
+    except KeyError:
+        log_file = open("mistyped_user.log", "a")
+        log_file.write(user.name + "\n")
+        log_file.close();
 
     characters = {}
     for p in player[0]["roster"]:
