@@ -20,7 +20,7 @@ ally_codes = {
     "Gege":				        "852962135",
     "Hadriel Jetberg":	        "665951232",
     "HALO4LIFE":		        "776241929",
-    "Hansen":			        "795631279",
+    "Hansen [HL]":		        "795631279",
     "Hartziw":			        "428655157",
     "HIDI":				        "143329682",
     "JoshuaMiller":		        "341537795",
