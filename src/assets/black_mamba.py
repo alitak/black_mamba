@@ -270,6 +270,9 @@ characters_alias = {
     "dr": "DARTHREVAN",
     "shak": "SHAAKTI",
     "sun": "SUNFAC",
+    "revan": "JEDIKNIGHTREVAN",
+    "bindo": "JOLEEBINDO",
+    "gas": "GENERALSKYWALKER"
 }
 
 characters_by_code = {

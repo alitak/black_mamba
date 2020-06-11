@@ -10,7 +10,7 @@ ally_codes = {
     "CarryBarry21":		        "764482282",
     "CedRick":			        "132861499",
     "Cruse McReaf":		        "349733345",
-    "csuleeano":		        "466833624",
+    "csuleeano JME":	        "466833624",
     "Dezoxiriboz":		        "993355546",
     "Dirtow Dezren":	        "252864384",
     "Eligor":			        "187264546",
