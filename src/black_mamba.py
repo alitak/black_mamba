@@ -172,7 +172,7 @@ async def zeta(ctx, user: discord.User, filter: str):
     debug(user.name + " | " + filter)
 
     if filter not in black_mamba.available_filters:
-        await addErrorReaction(ctx, "Gazdám! Rossz a filter!Nézz rá a -hello parancsra!")
+        await addErrorReaction(ctx, "Gazdám! Rossz a filter! Nézz rá a -hello parancsra!")
         return
 
     try:
@@ -186,15 +186,24 @@ async def zeta(ctx, user: discord.User, filter: str):
         log_file.write(user.name + "\n")
         log_file.close();
 
-    characters = {}
-    for p in player[0]["roster"]:
-        if p["rarity"] > 4 and p["gear"] > 9:
-            for q in p["skills"]:
-                if q["tier"] < 8 and q["isZeta"] is True:
-                    for zeta in zetas["zetas"]:
-                        if q["nameKey"] == zeta["name"] and zeta[filter] < 5:
-                            characters[str(zeta["toon"])] = {"name": str(zeta["toon"]), "zeta_nev": str(zeta["name"]), "ertek": float(zeta[filter])}
+    zeta_clean = {}
+    for zeta in zetas["zetas"]:
+        if 6 > zeta[filter]:
+            zeta_clean[zeta["name"]] = zeta[filter]
 
+    characters = {}
+    for character in player[0]["roster"]:
+        if character["rarity"] > 4 and character["gear"] > 9:
+            for skill in character["skills"]:
+                if skill["isZeta"] is True and skill["tier"] < 8:
+                    try:
+                        characters[str(black_mamba.characters_by_code[character["defId"]])] = {
+                            "name": str(black_mamba.characters_by_code[character["defId"]]),
+                            "zeta_nev": str(skill["nameKey"]),
+                            "ertek": float(zeta_clean[skill["nameKey"]])
+                        }
+                    except KeyError:
+                        continue
     for p_id, p_info in OrderedDict(sorted(characters.items(), key=lambda i: i[1]["ertek"])).items():
         embed.add_field(name=str(p_info["name"]), value=str(p_info["zeta_nev"] + " -> " + str(p_info["ertek"])), inline=False)
     embed.add_field(name="Lehetséges filterek", value=black_mamba.available_filters)

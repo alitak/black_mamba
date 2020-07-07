@@ -53,6 +53,6 @@ ally_codes = {
     "Wanted Criminal":	        "716496995",
     "Zolibalu":			        "298446494",
 
-    "alitak": "343735321",
+    "alitak": "186991324",
 }
 
