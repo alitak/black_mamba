@@ -26,6 +26,7 @@ ally_codes = {
     "JoshuaMiller":		        "341537795",
     "Karika Wal":		        "462989768",
     "Kenciesz":			        "244967315",
+    "ketpe":                    "261581384",
     "Kiscsory":			        "995857161",
     "Koallaective":		        "722762211",
     "kovaf":			        "448991329",

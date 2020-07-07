@@ -81,7 +81,7 @@ characters_by_name = {
     "ahsoka": "AHSOKATANO",
     "holdo": "AMILYNHOLDO",
     "jka": "ANAKINKNIGHT",
-    "ARC Trooper": "ARCTROOPER501ST",
+    "arctrooper": "ARCTROOPER501ST",
     "asajj": "ASAJVENTRESS",
     "aurra": "AURRA_SING",
     "b1": "B1BATTLEDROIDV2",
@@ -272,7 +272,12 @@ characters_alias = {
     "sun": "SUNFAC",
     "revan": "JEDIKNIGHTREVAN",
     "bindo": "JOLEEBINDO",
-    "gas": "GENERALSKYWALKER"
+    "gas": "GENERALSKYWALKER",
+    "arc": "ARCTROOPER501ST",
+    "gsoldier": "GEONOSIANSOLDIER",
+    "duku": "COUNTDOOKU",
+    "szufle": "SUPREMELEADERKYLOREN",
+    "supreme": "SUPREMELEADERKYLOREN"
 }
 
 characters_by_code = {
