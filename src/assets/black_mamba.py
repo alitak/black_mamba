@@ -149,7 +149,7 @@ characters_by_name = {
     "garsaxon": "GARSAXON",
     "General Hux": "GENERALHUX",
     "gk": "GENERALKENOBI",
-    "General Skywalker": "GENERALSKYWALKER",
+    "gas": "GENERALSKYWALKER",
     "gba": "GEONOSIANBROODALPHA",
     "geosoldier": "GEONOSIANSOLDIER",
     "geospy": "GEONOSIANSPY",
@@ -260,9 +260,7 @@ characters_by_name = {
     "zaalbar": "ZAALBAR",
     "zam": "ZAMWESELL",
     "zeb": "ZEBS3",
-}
-
-characters_alias = {
+    ## characters_alias
     "ajaj": "ASAJVENTRESS",
     "asaj": "ASAJVENTRESS",
     "ashoka": "AHSOKATANO",
@@ -272,7 +270,6 @@ characters_alias = {
     "sun": "SUNFAC",
     "revan": "JEDIKNIGHTREVAN",
     "bindo": "JOLEEBINDO",
-    "gas": "GENERALSKYWALKER",
     "arc": "ARCTROOPER501ST",
     "gsoldier": "GEONOSIANSOLDIER",
     "duku": "COUNTDOOKU",

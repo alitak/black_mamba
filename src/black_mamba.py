@@ -5,6 +5,7 @@ import os
 import sys
 from collections import OrderedDict
 from datetime import datetime
+from itertools import chain
 
 import discord
 from discord.ext import commands
@@ -112,12 +113,9 @@ async def hello(ctx):
 
 @bot.command(pass_context=True, description="Modolas nagyoktól,így kéne modolgatni. Segítségért: -nevek!")
 async def mod(ctx, nev: str):
-    if nev in black_mamba.characters_by_name or nev in black_mamba.characters_alias:
+    if nev in black_mamba.characters_by_name:
         await addWaitingReaction(ctx)
-        try:
-            selected_character = black_mamba.characters_by_name[nev]
-        except KeyError:
-            selected_character = black_mamba.characters_alias[nev]
+        selected_character = black_mamba.characters_by_name[nev]
 
         embed = discord.Embed(title="Legjobb modok rá: " + black_mamba.characters_by_code[selected_character], colour=0x00ffff)
         for name, ally_code in black_mamba.mod_users.items():
@@ -987,12 +985,12 @@ async def nevek(ctx, kezdo: str):
         await addWaitingReaction(ctx)
         embed = discord.Embed(title="Nevek, amik a megadott karakterrel kezdődnek!")
         od = collections.OrderedDict(sorted(black_mamba.characters_by_name.items()))
-        i = 1
-        for key in od.keys():
+        characters = ""
+        for key, character in od.items():
             if key.startswith(kezdo[0]):
-                embed.add_field(name=str(i), value=str(key), inline=False)
-                i += 1
+                characters = characters + str(key + " - " + black_mamba.characters_by_code[character]) + "\n"
 
+        embed.add_field(name=str(kezdo), value=str(characters))
         await ctx.send(embed=embed)
         await addSuccessReaction(ctx)
 
