@@ -50,8 +50,9 @@ ally_codes = {
     "TauntaunPrincess":	        "649527421",
     "Urpusz":			        "469686455",
     "viktoka":			        "357388624",
-    "Wanted Criminal":	        "716496995",
+    "WantedC_Sweed":	        "716496995",
     "Zolibalu":			        "298446494",
+    "Inkvizitor":               "883682627",
 
     "alitak": "186991324",
 }

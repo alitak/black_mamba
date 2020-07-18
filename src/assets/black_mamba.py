@@ -274,7 +274,8 @@ characters_by_name = {
     "gsoldier": "GEONOSIANSOLDIER",
     "duku": "COUNTDOOKU",
     "szufle": "SUPREMELEADERKYLOREN",
-    "supreme": "SUPREMELEADERKYLOREN"
+    "supreme": "SUPREMELEADERKYLOREN",
+    "padmé": "PADMEAMIDALA"
 }
 
 characters_by_code = {
