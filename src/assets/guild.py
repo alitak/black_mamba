@@ -53,6 +53,7 @@ ally_codes = {
     "WantedC_Sweed":	        "716496995",
     "Zolibalu":			        "298446494",
     "Inkvizitor":               "883682627",
+    "csiiiga":                  "222677837",
 
     "alitak": "186991324",
 }

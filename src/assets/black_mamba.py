@@ -275,7 +275,8 @@ characters_by_name = {
     "duku": "COUNTDOOKU",
     "szufle": "SUPREMELEADERKYLOREN",
     "supreme": "SUPREMELEADERKYLOREN",
-    "padmé": "PADMEAMIDALA"
+    "padmé": "PADMEAMIDALA",
+    "bma": "GEONOSIANBROODALPHA"
 }
 
 characters_by_code = {
