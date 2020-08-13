@@ -54,6 +54,7 @@ ally_codes = {
     "Zolibalu":			        "298446494",
     "Inkvizitor":               "883682627",
     "csiiiga":                  "222677837",
+    "Vertress":                 "737127234",
 
     "alitak": "186991324",
 }

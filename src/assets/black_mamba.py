@@ -276,7 +276,8 @@ characters_by_name = {
     "szufle": "SUPREMELEADERKYLOREN",
     "supreme": "SUPREMELEADERKYLOREN",
     "padmé": "PADMEAMIDALA",
-    "bma": "GEONOSIANBROODALPHA"
+    "bma": "GEONOSIANBROODALPHA",
+    "zombie": "NIGHTSISTERZOMBIE"
 }
 
 characters_by_code = {
