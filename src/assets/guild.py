@@ -1,11 +1,10 @@
-guild_ally = 341642861;
+guild_ally = 341642861
 
 ally_codes = {
     "AdamRose":			        "389847638",
     "Ajjaj Ventris":	        "922523414",
     "anakin95":			        "129924744",
     "Attilatesz":		        "785284847",
-    "Bameiro Kulumie":	        "186991324", # eredeti code
     "Beefadol Andro":	        "486173494",
     "CarryBarry21":		        "764482282",
     "CedRick":			        "132861499",
@@ -56,6 +55,5 @@ ally_codes = {
     "csiiiga":                  "222677837",
     "Vertress":                 "737127234",
 
-    "alitak": "186991324",
+    "alitak": "186991324",  # test
 }
-

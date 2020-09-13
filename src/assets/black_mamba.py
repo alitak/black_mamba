@@ -287,7 +287,6 @@ characters_by_name = {
     "piet": "ADMIRALPIETT",
     "spy": "GEONOSIANSPY",
     "basti": "BASTILASHAN",
-    "bastila": "BASTILASHAN",
     "shaak-ti": "SHAAKTI",
     "hyoda": "HERMITYODA",
     "dune": "CARADUNE"
