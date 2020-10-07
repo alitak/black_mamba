@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 commands = OrderedDict([
     ("Parancsok", "Továbbiakban a parancsaimról lesz szó!"),
-    ("Allycode", "A parancs hívott allycode-ját adja vissza."),
+    ("Ally", "-ally @megemlítés\nA parancs az allycode-ot adja vissza."),
     ("Alacsonymodok", "-alacsonymodok @megemlítés\nÖtcsillagos alattiakat listázok ki ezzel."),
     ("Mod Guide", "-mguide\nEgy farmolási kép terv a modolásaidhoz!"),
     ("Mod", "-mod <név>\nAjánlatos a -nevek parancsot futtatni lehet elsőre nem találod meg, ami kell!"),
@@ -15,6 +15,7 @@ commands = OrderedDict([
     ("Hasonlito", "-hasonlito <karakter név> @megemlítés <allycode>.\nKét ember karakterét összehasonlítja."),
     ("Top10", "-top10 <azonosító_szám> @megemlítés <allycode>.\nazonosító számok: 1-HP,2-Speed,3-Phy.Dmg,4-Spc.Dmg,5-Potency,6-Tenacity"),
     ("verzio", "A bot adott verziószámát adja vissza."),
+    ("Regisztráció", "-reg @megemlítés <ally_code>\nA felhasználót regisztrálja a megadott ally kódra."),
 ])
 
 swgoh_api = {
