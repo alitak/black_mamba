@@ -290,7 +290,9 @@ characters_by_name = {
     "basti": "BASTILASHAN",
     "shaak-ti": "SHAAKTI",
     "hyoda": "HERMITYODA",
-    "dune": "CARADUNE"
+    "dune": "CARADUNE",
+    "ig-100": "MAGNAGUARD",
+    "ig100": "MAGNAGUARD"
 }
 
 characters_by_code = {
