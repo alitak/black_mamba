@@ -159,6 +159,7 @@ characters_by_name = {
     "geospy": "GEONOSIANSPY",
     "glrey": "GLREY",
     "thrawn": "GRANDADMIRALTHRAWN",
+    "jkls": "GRANDMASTERLUKE",
     "gmy": "GRANDMASTERYODA",
     "tarkin": "GRANDMOFFTARKIN",
     "greedo": "GREEDO",
@@ -269,6 +270,7 @@ characters_by_name = {
     ## characters_alias
     "ajaj": "ASAJVENTRESS",
     "asaj": "ASAJVENTRESS",
+    "ajjaj": "ASAJVENTRESS",
     "ashoka": "AHSOKATANO",
     "asoka": "AHSOKATANO",
     "dr": "DARTHREVAN",
@@ -292,7 +294,17 @@ characters_by_name = {
     "hyoda": "HERMITYODA",
     "dune": "CARADUNE",
     "ig-100": "MAGNAGUARD",
-    "ig100": "MAGNAGUARD"
+    "ig100": "MAGNAGUARD",
+    "jkl": "GRANDMASTERLUKE",
+    "r2": "R2D2_LEGENDARY",
+    "marauder": "SITHMARAUDER",
+    "bobafett": "BOBAFETT",
+    "spirit": "NIGHTSISTERSPIRIT",
+    "palpa": "EMPERORPALPATINE",
+    "hk-47": "HK-47",
+    "hux": "GENERALHUX",
+    "ghux": "GENERALHUX",
+    "fbastila": "BASTILASHANDARK",
 }
 
 characters_by_code = {
@@ -379,6 +391,7 @@ characters_by_code = {
     "GEONOSIANSOLDIER": "Geonosian Soldier",
     "GEONOSIANSPY": "Geonosian Spy",
     "GRANDADMIRALTHRAWN": "Grand Admiral Thrawn",
+    "GRANDMASTERLUKE": "Jedi Master Luke Skywalker",
     "GRANDMASTERYODA": "Grand Master Yoda",
     "GRANDMOFFTARKIN": "Grand Moff Tarkin",
     "GREEDO": "Greedo",
